@@ -6,15 +6,15 @@
 #    By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/29 11:33:59 by amalecki          #+#    #+#              #
-#    Updated: 2021/12/29 11:48:17 by amalecki         ###   ########.fr        #
+#    Updated: 2021/12/31 16:24:50 by amalecki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = main.c
+SRC = main.c ft_atoi.c basic_utils.c
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -lpthread #-pthread  proly not needed
+CFLAGS = -Wall -Wextra -lpthread #-Werror #-pthread  proly not needed
 
 NAME = philo
 
