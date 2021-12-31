@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2021/12/31 18:24:30 by amalecki         ###   ########.fr       */
+/*   Updated: 2021/12/31 19:22:48 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ typedef struct s_philo
 {
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
+	int				*alive;
+	int				number;
 	int				total;
 	char			*state;
 	bool			change;
@@ -38,7 +40,7 @@ void		init_forks(pthread_mutex_t *forks, int args);
 void		destroy_forks(pthread_mutex_t *forks, int args);
 int			ft_atoi(const char *nptr);
 int			check_args(int argc, char *argv[], int args[5]);
-int			init_pointers(pthread_mutex_t **forks,
+int			aloc_pointers(pthread_mutex_t **forks,
 				t_philo **p, int **held, int **prev);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2021/12/31 18:26:36 by amalecki         ###   ########.fr       */
+/*   Updated: 2021/12/31 19:24:09 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,15 @@
 void	*philosopher(void *philo_data)
 {
 	t_philo	*data;
+	int		*alive;
 
 	data = (t_philo *)(philo_data);
+	*alive = data->alive; 
+	while (*alive)
+	{
+		printf("philosopher %d\n", data->number);
+		usleep(10000);
+	}
 	return (NULL);
 }
 
@@ -25,13 +32,16 @@ void	*status_updates(void *tid)
 	return (tid);
 }
 
-void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[5])
+void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
 {
 	int	i;
 
 	i = 0;
+	args[5] = 1;
 	while (i < args[0])
 	{
+		p[i].alive = &args[5];
+		p[i].number = i + 1;
 		if (i == args[0] - 1)
 		{
 			p[i].first_fork = &forks[0];
@@ -58,12 +68,12 @@ int	main(int argc, char *argv[])
 	t_philo			*philosophers;
 	int				*held_by;
 	int				*prev_used_by;
-	int				args[5];
+	int				args[6];
 
 	if (!check_args(argc, argv, args))
 		return (write(1, "Problem with arguments!\n", 25));
 	*held_by = args[0];
-	if (!init_pointers(&forks, &philosophers, &held_by, &prev_used_by))
+	if (!aloc_pointers(&forks, &philosophers, &held_by, &prev_used_by))
 		return (write(1, "Problem with memory allocation!\n", 33));
 	init_forks(forks, args[0]);
 	init_philosophers(philosophers, forks, args);

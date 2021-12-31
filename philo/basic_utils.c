@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:43:31 by amalecki          #+#    #+#             */
-/*   Updated: 2021/12/31 18:29:04 by amalecki         ###   ########.fr       */
+/*   Updated: 2021/12/31 19:14:51 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_args(int argc, char *argv[], int args[5])
 	return (1);
 }
 
-int	init_pointers(pthread_mutex_t **forks, t_philo **p, int **held, int **prev)
+int	aloc_pointers(pthread_mutex_t **forks, t_philo **p, int **held, int **prev)
 {
 	int	size;
 
