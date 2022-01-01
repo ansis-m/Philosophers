@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/01 11:30:37 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/01 11:55:48 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,16 @@
 void	*philosopher(void *philo_data)
 {
 	t_philo	*data;
-	int		*alive;
+	int		*live;
 
 	data = (t_philo *)(philo_data);
-	*alive = data->alive; 
-	while (*alive)
+	live = data->alive;
+	while (*live)
 	{
 		printf("philosopher %d\n", data->number);
 		usleep(10000);
 	}
+	usleep(1000000);
 	return (NULL);
 }
 
@@ -58,10 +59,31 @@ void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
 	}
 }
 
-int	start_threads(pthread_t *threads, t_philo *philosophers)
+int	start_threads(pthread_t *threads, t_philo *philosophers, int size)
 {
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		pthread_create(&threads[i], NULL, philosopher, (void *)&philosophers[i]);
+		i++;
+	}
+	return (1);
 }
 
+int	join_threads(pthread_t *threads, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
+	return (1);
+}
 //args[0] number of philosophers
 //args[1] time_to_die
 //args[2] time_to_eat
@@ -80,7 +102,10 @@ int	main(int argc, char *argv[])
 		return (write(1, "Problem with memory allocation!\n", 33));
 	init_forks(forks, args[0]);
 	init_philosophers(philosophers, forks, args);
-	start_threads(threads, philosophers);
+	start_threads(threads, philosophers, args[0]);
+	usleep(1000000);
+	args[5] = 0;
+	join_threads(threads, args[0]);
 	destroy_forks(forks, args[0]);
 	deallocate(forks, philosophers, threads);
 	pthread_exit(NULL);
