@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2021/12/31 19:22:48 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/01 11:26:16 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ typedef struct s_philo
 }	t_philo;
 
 void		deallocate(pthread_mutex_t *forks,
-				t_philo *p, int *held, int *prev);
+				t_philo *p, pthread_t *threads);
 void		init_forks(pthread_mutex_t *forks, int args);
 void		destroy_forks(pthread_mutex_t *forks, int args);
 int			ft_atoi(const char *nptr);
 int			check_args(int argc, char *argv[], int args[5]);
 int			aloc_pointers(pthread_mutex_t **forks,
-				t_philo **p, int **held, int **prev);
+				t_philo **philosophers, pthread_t **threads, int size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:43:31 by amalecki          #+#    #+#             */
-/*   Updated: 2021/12/31 19:14:51 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/01 11:27:37 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,32 +33,29 @@ int	check_args(int argc, char *argv[], int args[5])
 		args[i - 1] = ft_atoi(argv[i]);
 		i++;
 	}
+	if (args[0] == 0)
+		return (0);
 	return (1);
 }
 
-int	aloc_pointers(pthread_mutex_t **forks, t_philo **p, int **held, int **prev)
+int	aloc_pointers(pthread_mutex_t **forks, t_philo **philosophers, pthread_t **threads, int size)
 {
-	int	size;
-
-	size = **held;
 	*forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * size);
-	*p = (t_philo *)malloc(sizeof(t_philo) * size);
-	*held = (int *)malloc(sizeof(int) * size);
-	*prev = (int *)malloc(sizeof(int) * size);
-	if (!*forks || !*p || !*held || !*prev)
+	*philosophers = (t_philo *)malloc(sizeof(t_philo) * size);
+	*threads = (pthread_t *)malloc(sizeof(pthread_t) * size);
+	if (!*forks || !*philosophers || !*threads)
 	{
-		deallocate(*forks, *p, *held, *prev);
+		deallocate(*forks, *philosophers, *threads);
 		return (0);
 	}
 	return (1);
 }
 
-void	deallocate(pthread_mutex_t *forks, t_philo *p, int *held, int *prev)
+void	deallocate(pthread_mutex_t *forks, t_philo *philosophers, pthread_t *threads)
 {
-	free(held);
-	free(prev);
 	free(forks);
-	free(p);
+	free(philosophers);
+	free(threads);
 }
 
 void	init_forks(pthread_mutex_t *forks, int args)
