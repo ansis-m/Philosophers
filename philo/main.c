@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/02 12:51:04 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/02 16:37:58 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,44 @@ void	*philosopher(void *philo_data)
 {
 	t_philo			data;
 	int				*live;
+	long long	marker;
 
 	data = *(t_philo *)(philo_data);
+	//printf("philosopher: %d forks: %p, %p\n",data.number, data.first_fork, data.second_fork);
 	live = data.alive;
 	data.last_meal = data.begin;
 	if (! (data.number % 2))
 	{
 		printf("timestamp: %lld\t philosopher %d is thinking\n", timestamp(data.begin), data.number);
-		usleep(1500);
+		usleep(data.teat / 2);
 	}
 	if (data.total % 2 && data.total > 1 && data.number == data.total)
 	{
 		printf("timestamp: %lld\t%d last is thinking\n", timestamp(data.begin), data.number);
-		usleep(2000);
+		usleep(data.teat + 1000);
 	}
 	while (*live && data.meals)
 	{
-		gettimeofday(&data.tv, NULL);
+		pthread_mutex_lock(data.first_fork);
+		printf("timestamp: %lld\t philosopher %d has taken the first fork\n", timestamp(data.begin), data.number);
+		pthread_mutex_lock(data.second_fork);
+		print = true;
+		data.last_meal = get_time_now();
+		marker = data.last_meal;
+		printf("timestamp: %lld\t philosopher %d has taken the second fork and is eating\n", timestamp(data.begin), data.number);
+		while (timestamp(marker) * 1001 < data.teat)
+		{
+			usleep(1000);
+		}	
+		pthread_mutex_unlock(data.first_fork);
+		pthread_mutex_unlock(data.second_fork);
+		marker = get_time_now();
+		printf("timestamp: %lld\t philosopher %d is sleeping\n", timestamp(data.begin), data.number);
+		while (timestamp(marker) * 1001 < data.tsleep)
+		{
+			usleep(1000);
+		}
 		data.meals--;
-		printf("philosopher %d\t begin: %lld\t now: %lld\n", data.number, data.begin, get_time_now());
-		usleep(1000);
-		//usleep(data.teat);
-		//usleep(data.tsleep);
 	}
 	return (NULL);
 }

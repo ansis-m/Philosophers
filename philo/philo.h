@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/02 12:36:46 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/02 14:05:34 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_philo
 {
 	long long		begin;
 	long long		last_meal;
+	long long		marker;
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
 	int				*alive;
