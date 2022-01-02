@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/01 11:26:16 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/02 12:36:46 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,43 @@
 # include	<sys/types.h>
 # include <stdio.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 typedef struct s_philo
 {
+	long long		begin;
+	long long		last_meal;
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
 	int				*alive;
 	int				number;
 	int				total;
-	char			*state;
-	bool			change;
-	int				*held_by;
-	int				*prev_used_by;
+	int				tdie;
+	int				teat;
+	int				tsleep;
+	int				meals;
+	struct timeval	tv;
 }	t_philo;
 
+//ft_atoi.c
+int			ft_atoi(const char *nptr);
+
+//basic_utils.c
 void		deallocate(pthread_mutex_t *forks,
 				t_philo *p, pthread_t *threads);
 void		init_forks(pthread_mutex_t *forks, int args);
 void		destroy_forks(pthread_mutex_t *forks, int args);
-int			ft_atoi(const char *nptr);
-int			check_args(int argc, char *argv[], int args[5]);
+int			check_args(int argc, char *argv[], int args[6]);
 int			aloc_pointers(pthread_mutex_t **forks,
 				t_philo **philosophers, pthread_t **threads, int size);
+
+//basic_utils2.c
+int			start_threads(pthread_t *threads, t_philo *philosophers, int size);
+int			join_threads(pthread_t *threads, int size);
+long long	get_time_now(void);
+long long	timestamp(long long begin);
+
+//main.c
+void		*philosopher(void *philo_data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:43:31 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/01 11:27:37 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/01 12:05:02 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	check_args(int argc, char *argv[], int args[5])
 	return (1);
 }
 
-int	aloc_pointers(pthread_mutex_t **forks, t_philo **philosophers, pthread_t **threads, int size)
+int	aloc_pointers(pthread_mutex_t **forks,
+		t_philo **philosophers, pthread_t **threads, int size)
 {
 	*forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * size);
 	*philosophers = (t_philo *)malloc(sizeof(t_philo) * size);
@@ -51,7 +52,8 @@ int	aloc_pointers(pthread_mutex_t **forks, t_philo **philosophers, pthread_t **t
 	return (1);
 }
 
-void	deallocate(pthread_mutex_t *forks, t_philo *philosophers, pthread_t *threads)
+void	deallocate(pthread_mutex_t *forks,
+		t_philo *philosophers, pthread_t *threads)
 {
 	free(forks);
 	free(philosophers);

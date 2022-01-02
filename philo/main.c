@@ -6,43 +6,58 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/01 11:55:48 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/02 12:51:04 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+//timestamp_in_ms X is sleeping
 void	*philosopher(void *philo_data)
 {
-	t_philo	*data;
-	int		*live;
+	t_philo			data;
+	int				*live;
 
-	data = (t_philo *)(philo_data);
-	live = data->alive;
-	while (*live)
+	data = *(t_philo *)(philo_data);
+	live = data.alive;
+	data.last_meal = data.begin;
+	if (! (data.number % 2))
 	{
-		printf("philosopher %d\n", data->number);
-		usleep(10000);
+		printf("timestamp: %lld\t philosopher %d is thinking\n", timestamp(data.begin), data.number);
+		usleep(1500);
 	}
-	usleep(1000000);
+	if (data.total % 2 && data.total > 1 && data.number == data.total)
+	{
+		printf("timestamp: %lld\t%d last is thinking\n", timestamp(data.begin), data.number);
+		usleep(2000);
+	}
+	while (*live && data.meals)
+	{
+		gettimeofday(&data.tv, NULL);
+		data.meals--;
+		printf("philosopher %d\t begin: %lld\t now: %lld\n", data.number, data.begin, get_time_now());
+		usleep(1000);
+		//usleep(data.teat);
+		//usleep(data.tsleep);
+	}
 	return (NULL);
-}
-
-void	*status_updates(void *tid)
-{
-	return (tid);
 }
 
 void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
 {
-	int	i;
+	struct timeval	begin;
+	int				i;
 
-	i = 0;
 	args[5] = 1;
+	i = 0;
 	while (i < args[0])
 	{
 		p[i].alive = &args[5];
 		p[i].total = args[0];
+		p[i].tdie = args[1] * 1000;
+		p[i].teat = args[2] * 1000;
+		p[i].tsleep = args[3] * 1000;
+		p[i].meals = args[4];
 		p[i].number = i + 1;
 		if (i == args[0] - 1)
 		{
@@ -54,36 +69,10 @@ void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
 			p[i].first_fork = &forks[i];
 			p[i].second_fork = &forks[i + 1];
 		}
-		p[i].change = false;
 		i++;
 	}
 }
 
-int	start_threads(pthread_t *threads, t_philo *philosophers, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		pthread_create(&threads[i], NULL, philosopher, (void *)&philosophers[i]);
-		i++;
-	}
-	return (1);
-}
-
-int	join_threads(pthread_t *threads, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		pthread_join(threads[i], NULL);
-		i++;
-	}
-	return (1);
-}
 //args[0] number of philosophers
 //args[1] time_to_die
 //args[2] time_to_eat
@@ -103,8 +92,8 @@ int	main(int argc, char *argv[])
 	init_forks(forks, args[0]);
 	init_philosophers(philosophers, forks, args);
 	start_threads(threads, philosophers, args[0]);
-	usleep(1000000);
-	args[5] = 0;
+	usleep(100000);
+	//args[5] = 0;
 	join_threads(threads, args[0]);
 	destroy_forks(forks, args[0]);
 	deallocate(forks, philosophers, threads);
