@@ -6,11 +6,11 @@
 #    By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/29 11:33:59 by amalecki          #+#    #+#              #
-#    Updated: 2022/01/02 18:41:52 by amalecki         ###   ########.fr        #
+#    Updated: 2022/01/02 19:26:41 by amalecki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = main.c ft_atoi.c basic_utils.c basic_utils2.c death_checker_threads.c
+SRC = main.c ft_atoi.c basic_utils.c basic_utils2.c philosopher_threads.c death_checker_threads.c
 
 CC = cc
 

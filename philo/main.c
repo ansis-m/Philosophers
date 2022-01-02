@@ -6,65 +6,13 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/02 19:14:50 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/02 19:30:02 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//timestamp_in_ms X is sleeping
-void	*philosopher(void *philo_data)
-{
-	t_philo			*data;
-	int				*live;
-	long long	marker;
-
-	data = (t_philo *)(philo_data);
-	live = data->alive;
-	data->last_meal = data->begin;
-	if (! (data->number % 2))
-	{
-		printf("timestamp: %lld\t philosopher %d is thinking\n", timestamp(data->begin), data->number);
-		usleep(data->teat * 1000 / 2);
-	}
-	if (data->total % 2 && data->total > 1 && data->number == data->total)
-	{
-		printf("timestamp: %lld\t philosopher %d is thinking\n", timestamp(data->begin), data->number);
-		usleep(data->teat * 1000 + 1000);
-	}
-	while (*live && data->meals)
-	{
-		pthread_mutex_lock(data->first_fork);
-		printf("timestamp: %lld\t philosopher %d has taken the first fork\n", timestamp(data->begin), data->number);
-		pthread_mutex_lock(data->second_fork);
-		data->last_meal = get_time_now();
-		marker = data->last_meal;
-		if (!*live)
-			break;
-		printf("timestamp: %lld\t philosopher %d has taken the second fork and is eating\n", timestamp(data->begin), data->number);
-		while (timestamp(marker) < data->teat)
-		{
-			usleep(1000);
-		}	
-		pthread_mutex_unlock(data->first_fork);
-		pthread_mutex_unlock(data->second_fork);
-		marker = get_time_now();
-		if (!*live)
-			break;
-		printf("timestamp: %lld\t philosopher %d is sleeping\n", timestamp(data->begin), data->number);
-		while (timestamp(marker) < data->tsleep)
-		{
-			usleep(1000);
-		}
-		data->meals--;
-		if (!*live)
-			break;
-		printf("timestamp: %lld\t philosopher %d is thinking\n", timestamp(data->begin), data->number);
-	}
-	return (NULL);
-}
-
-void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
+static void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
 {
 	struct timeval	begin;
 	int				i;

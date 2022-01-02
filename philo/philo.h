@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/02 18:47:12 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/02 19:30:59 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,17 @@ typedef struct s_philo
 	struct timeval	tv;
 }	t_philo;
 
+//main.c
+
+//philosopher_threads.c
+int			start_threads(pthread_t *threads, t_philo *philosophers, int size);
+void		*philosopher(void *philo_data);
+
+//death_checker_threads.c
+int			start_death_checker_threads(pthread_t *threads,
+				t_philo *philosophers, int size);
+void		*death_checker(void *philo_data);
+
 //ft_atoi.c
 int			ft_atoi(const char *nptr);
 
@@ -52,17 +63,8 @@ int			aloc_pointers(pthread_mutex_t **forks,
 				t_philo **philosophers, pthread_t **threads, int size);
 
 //basic_utils2.c
-int			start_threads(pthread_t *threads, t_philo *philosophers, int size);
 int			join_threads(pthread_t *threads, int size);
 long long	get_time_now(void);
 long long	timestamp(long long begin);
-
-//death_checker_threads.c
-int			start_death_checker_threads(pthread_t *threads,
-				t_philo *philosophers, int size);
-void		*death_checker(void *philo_data);
-
-//main.c
-void		*philosopher(void *philo_data);
 
 #endif
