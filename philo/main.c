@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/02 19:30:02 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/03 10:58:06 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,8 @@ static void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
 		p[i].tsleep = args[3];
 		p[i].meals = args[4];
 		p[i].number = i + 1;
-		if (i == args[0] - 1)
-		{
-			p[i].first_fork = &forks[0];
-			p[i].second_fork = &forks[args[0] - 1];
-		}
-		else
-		{
-			p[i].first_fork = &forks[i];
-			p[i].second_fork = &forks[i + 1];
-		}
+		p[i].first_fork = &forks[i];
+		p[i].second_fork = &forks[(i + 1) % args[0]];
 		i++;
 	}
 }
@@ -65,6 +57,5 @@ int	main(int argc, char *argv[])
 	join_threads(threads, args[0]);
 	destroy_forks(forks, args[0]);
 	deallocate(forks, philosophers, threads);
-	pthread_exit(NULL);
 	return (0);
 }

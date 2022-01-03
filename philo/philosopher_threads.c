@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 19:26:08 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/02 21:02:29 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/03 11:03:12 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,22 @@ void	*philosopher(void *philo_data)
 		printf("timestamp: %lld\t philosopher %d is thinking\n", timestamp(data->begin), data->number);
 		usleep(data->teat * 2000);
 	}
+	if (data->total == 1)
+	{
+		printf("timestamp: %lld\t philosopher %d has taken the first fork\n", timestamp(data->begin), data->number);
+		return (NULL);
+	}
 	while (*live && data->meals)
 	{
 		pthread_mutex_lock(data->first_fork);
 		if (!*live)
-			break;
+			return (NULL);
 		printf("timestamp: %lld\t philosopher %d has taken the first fork\n", timestamp(data->begin), data->number);
 		pthread_mutex_lock(data->second_fork);
 		data->last_meal = get_time_now();
 		marker = data->last_meal;
 		if (!*live)
-			break;
+			return (NULL);
 		printf("timestamp: %lld\t philosopher %d has taken the second fork and is eating\n", timestamp(data->begin), data->number);
 		while (timestamp(marker) < data->teat)
 		{
@@ -52,7 +57,7 @@ void	*philosopher(void *philo_data)
 		pthread_mutex_unlock(data->second_fork);
 		marker = get_time_now();
 		if (!*live)
-			break;
+			return (NULL);
 		printf("timestamp: %lld\t philosopher %d is sleeping\n", timestamp(data->begin), data->number);
 		while (timestamp(marker) < data->tsleep)
 		{
@@ -60,10 +65,9 @@ void	*philosopher(void *philo_data)
 		}
 		data->meals--;
 		if (!*live)
-			break;
+			return (NULL);
 		printf("timestamp: %lld\t philosopher %d is thinking\n", timestamp(data->begin), data->number);
 	}
-	return (NULL);
 }
 
 int	start_threads(pthread_t *threads, t_philo *philosophers, int size)
@@ -78,7 +82,6 @@ int	start_threads(pthread_t *threads, t_philo *philosophers, int size)
 		philosophers[i].begin = b;
 		pthread_create(&threads[i], NULL, philosopher,
 			(void *)&philosophers[i]);
-		//pthread_detach(threads[i]);
 		i += 2;
 	}
 	i = 0;
@@ -87,7 +90,6 @@ int	start_threads(pthread_t *threads, t_philo *philosophers, int size)
 		philosophers[i].begin = b;
 		pthread_create(&threads[i], NULL, philosopher,
 			(void *)&philosophers[i]);
-		//pthread_detach(threads[i]);
 		i += 2;
 	}
 	if (size % 2)
@@ -95,7 +97,6 @@ int	start_threads(pthread_t *threads, t_philo *philosophers, int size)
 		philosophers[size - 1].begin = b;
 		pthread_create(&threads[size - 1], NULL, philosopher,
 			(void *)&philosophers[size - 1]);
-		//pthread_detach(threads[size - 1]);
 	}
 	return (1);
 }
