@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/02 19:30:59 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/03 12:24:04 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ typedef struct s_philo
 	int				teat;
 	int				tsleep;
 	int				meals;
-	struct timeval	tv;
 }	t_philo;
 
 //main.c
@@ -55,6 +54,7 @@ int			ft_atoi(const char *nptr);
 
 //basic_utils.c
 void		deallocate(pthread_mutex_t *forks,
+				pthread_mutex_t *death_checker_locks,
 				t_philo *p, pthread_t *threads);
 void		init_forks(pthread_mutex_t *forks, int args);
 void		destroy_forks(pthread_mutex_t *forks, int args);

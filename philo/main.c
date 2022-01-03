@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/03 10:58:06 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/03 12:25:25 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
 {
-	struct timeval	begin;
 	int				i;
 
 	args[5] = 1;
@@ -34,6 +33,23 @@ static void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
 	}
 }
 
+int	init_death_checker_locks(pthread_mutex_t **death_checker_locks, int size)
+{
+	int	i;
+
+	*death_checker_locks
+		= (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * size);
+	if (!*death_checker_locks)
+		return (0);
+	i = 0;
+	while (i < size)
+	{
+		pthread_mutex_init(*death_checker_locks + i, NULL);
+		i++;
+	}
+	return (1);
+}
+
 //args[0] number of philosophers
 //args[1] time_to_die
 //args[2] time_to_eat
@@ -42,6 +58,7 @@ static void	init_philosophers(t_philo *p, pthread_mutex_t *forks, int args[6])
 int	main(int argc, char *argv[])
 {
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*death_checker_locks;
 	pthread_t		*threads;
 	t_philo			*philosophers;
 	int				args[6];
@@ -51,11 +68,13 @@ int	main(int argc, char *argv[])
 	if (!aloc_pointers(&forks, &philosophers, &threads, args[0]))
 		return (write(1, "Problem with memory allocation!\n", 33));
 	init_forks(forks, args[0]);
+	init_death_checker_locks(&death_checker_locks, args[0]);
 	init_philosophers(philosophers, forks, args);
 	start_threads(threads, philosophers, args[0]);
 	start_death_checker_threads(threads, philosophers, args[0]);
 	join_threads(threads, args[0]);
 	destroy_forks(forks, args[0]);
-	deallocate(forks, philosophers, threads);
+	destroy_forks(death_checker_locks, args[0]);
+	deallocate(forks, death_checker_locks, philosophers, threads);
 	return (0);
 }

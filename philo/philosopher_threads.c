@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 19:26:08 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/03 11:03:12 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/03 11:49:33 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,10 @@ void	*philosopher(void *philo_data)
 		printf("timestamp: %lld\t philosopher %d has taken the first fork\n", timestamp(data->begin), data->number);
 		pthread_mutex_lock(data->second_fork);
 		data->last_meal = get_time_now();
-		marker = data->last_meal;
 		if (!*live)
 			return (NULL);
 		printf("timestamp: %lld\t philosopher %d has taken the second fork and is eating\n", timestamp(data->begin), data->number);
-		while (timestamp(marker) < data->teat)
+		while (timestamp(data->last_meal) < data->teat)
 		{
 			usleep(1000);
 		}	
@@ -68,6 +67,7 @@ void	*philosopher(void *philo_data)
 			return (NULL);
 		printf("timestamp: %lld\t philosopher %d is thinking\n", timestamp(data->begin), data->number);
 	}
+	return (NULL);
 }
 
 int	start_threads(pthread_t *threads, t_philo *philosophers, int size)
