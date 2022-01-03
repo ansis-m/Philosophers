@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 18:41:22 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/03 11:11:29 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/03 12:37:53 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	*death_checker(void *philo_data)
 	return (NULL);
 }
 
-int	start_death_checker_threads(pthread_t *threads, t_philo *philosophers, int size)
+int	start_death_checker_threads(pthread_t *threads,
+	t_philo *philosophers, int size)
 {
 	int				i;
 

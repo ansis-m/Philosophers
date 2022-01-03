@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 19:26:08 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/03 11:49:33 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/03 12:57:44 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,27 +76,13 @@ int	start_threads(pthread_t *threads, t_philo *philosophers, int size)
 	long long		b;
 
 	b = get_time_now();
-	i = 1;
+	i = 0;
 	while (i < size)
 	{
 		philosophers[i].begin = b;
 		pthread_create(&threads[i], NULL, philosopher,
 			(void *)&philosophers[i]);
-		i += 2;
-	}
-	i = 0;
-	while (i < size - 1)
-	{
-		philosophers[i].begin = b;
-		pthread_create(&threads[i], NULL, philosopher,
-			(void *)&philosophers[i]);
-		i += 2;
-	}
-	if (size % 2)
-	{
-		philosophers[size - 1].begin = b;
-		pthread_create(&threads[size - 1], NULL, philosopher,
-			(void *)&philosophers[size - 1]);
+		i++ ;
 	}
 	return (1);
 }
