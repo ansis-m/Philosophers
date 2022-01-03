@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/03 13:24:22 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/03 15:35:57 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static void	init_philosophers(t_philo *p, pthread_mutex_t *forks,
 			p[i].second_fork = forks + i + 1;
 		}
 		p[i].death_checker_lock = death_checker_locks + i;
-		// p[i].first_fork = &forks[i];
-		// p[i].second_fork = &forks[(i + 1) % args[0]];
+		p[i].indicator_lock = death_checker_locks + args[0];
+		//printf("number %d and death_lock: %p\n", p[i].number, p[i].death_checker_lock);
 		i++;
 	}
 }
@@ -50,7 +50,7 @@ int	init_death_checker_locks(pthread_mutex_t **death_checker_locks, int size)
 	int	i;
 
 	*death_checker_locks
-		= (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * size);
+		= (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * size + 1);
 	if (!*death_checker_locks)
 		return (0);
 	i = 0;
@@ -80,7 +80,7 @@ int	main(int argc, char *argv[])
 	if (!aloc_pointers(&forks, &philosophers, &threads, args[0]))
 		return (write(1, "Problem with memory allocation!\n", 33));
 	init_forks(forks, args[0]);
-	if (init_death_checker_locks(&death_checker_locks, args[0]))
+	if (init_death_checker_locks(&death_checker_locks, args[0]) && args[4])
 	{
 		init_philosophers(philosophers, forks, death_checker_locks, args);
 		start_threads(threads, philosophers, args[0]);
@@ -88,6 +88,8 @@ int	main(int argc, char *argv[])
 		join_threads(threads, args[0]);
 		destroy_forks(death_checker_locks, args[0]);
 	}
+	if (!args[4])
+		printf("There is no food! The bowl is empty!\n");
 	destroy_forks(forks, args[0]);
 	deallocate(forks, death_checker_locks, philosophers, threads);
 	return (0);
