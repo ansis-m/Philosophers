@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/04 13:04:46 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 15:35:32 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include	<unistd.h>
 # include	<stdlib.h>
 # include	<stdbool.h>
-# include	<limits.h> // TO BE REMOVED????????
 # include	<sys/types.h>
 # include <stdio.h>
 # include <pthread.h>
@@ -45,11 +44,16 @@ typedef struct s_philo
 //philosopher_threads.c
 int			start_threads(pthread_t *threads, t_philo *philosophers, int size);
 void		*philosopher(void *philo_data);
+void		delay(t_philo *data, int multiplier);
+int			initial_delay(t_philo *data);
+int			philo_cycle(t_philo *data, int *live, long long sleep);
 
 //death_checker_threads.c
 bool		still_alive(t_philo *philosopher);
 int			start_death_checker_threads(pthread_t *threads,
 				t_philo *philosophers, int size);
+int			init_death_checker_locks(pthread_mutex_t **death_checker_locks,
+				int size);
 void		*death_checker(void *philo_data);
 
 //ft_atoi.c

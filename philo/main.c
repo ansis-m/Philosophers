@@ -6,11 +6,22 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/04 11:34:54 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 14:48:00 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	init_args(t_philo *p, int args[6], int i)
+{
+	p->alive = &args[5];
+	p->total = args[0];
+	p->tdie = args[1];
+	p->teat = args[2];
+	p->tsleep = args[3];
+	p->meals = args[4];
+	p->number = i + 1;
+}
 
 static void	init_philosophers(t_philo *p, pthread_mutex_t *forks,
 	pthread_mutex_t *death_checker_locks, int args[6])
@@ -21,13 +32,7 @@ static void	init_philosophers(t_philo *p, pthread_mutex_t *forks,
 	i = 0;
 	while (i < args[0])
 	{
-		p[i].alive = &args[5];
-		p[i].total = args[0];
-		p[i].tdie = args[1];
-		p[i].teat = args[2];
-		p[i].tsleep = args[3];
-		p[i].meals = args[4];
-		p[i].number = i + 1;
+		init_args(&p[i], args, i);
 		if (i == args[0] - 1)
 		{
 			p[i].first_fork = forks;
@@ -40,26 +45,8 @@ static void	init_philosophers(t_philo *p, pthread_mutex_t *forks,
 		}
 		p[i].death_checker_lock = death_checker_locks + i;
 		p[i].indicator_lock = death_checker_locks + args[0];
-		//printf("number %d and death_lock: %p\n", p[i].number, p[i].death_checker_lock);
 		i++;
 	}
-}
-
-int	init_death_checker_locks(pthread_mutex_t **death_checker_locks, int size)
-{
-	int	i;
-
-	*death_checker_locks
-		= (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * size + 1);
-	if (!*death_checker_locks)
-		return (0);
-	i = 0;
-	while (i < size)
-	{
-		pthread_mutex_init(*death_checker_locks + i, NULL);
-		i++;
-	}
-	return (1);
 }
 
 //args[0] number of philosophers

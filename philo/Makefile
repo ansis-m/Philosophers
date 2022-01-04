@@ -6,7 +6,7 @@
 #    By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/29 11:33:59 by amalecki          #+#    #+#              #
-#    Updated: 2022/01/04 13:12:13 by amalecki         ###   ########.fr        #
+#    Updated: 2022/01/04 14:51:29 by amalecki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRC = main.c ft_atoi.c basic_utils.c basic_utils2.c philosopher_threads.c death_
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -pthread -fsanitize=thread -lpthread #-Werror -fsanitize=thread TO BE REMOVED!!!!!!!!!!!!
+CFLAGS = -Wall -Wextra -pthread -fsanitize=thread -lpthread -Werror #-fsanitize=thread TO BE REMOVED!!!!!!!!!!!!
 
 NAME = philo
 
