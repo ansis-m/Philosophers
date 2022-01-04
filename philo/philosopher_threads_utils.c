@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 15:59:20 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/04 16:49:34 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 19:28:58 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	lock_first_fork(t_philo *data)
 	if (!*(data->alive))
 	{
 		pthread_mutex_unlock(data->first_fork);
-		pthread_mutex_unlock(data->death_checker_lock);
 		return (0);
 	}
 	printf("%8lld ms   P%d has taken the first fork\n",
@@ -38,7 +37,6 @@ int	lock_second_fork(t_philo *data)
 	{
 		pthread_mutex_unlock(data->first_fork);
 		pthread_mutex_unlock(data->second_fork);
-		pthread_mutex_unlock(data->death_checker_lock);
 		return (0);
 	}
 	printf("%8lld ms   P%d has taken the second fork and is eating\n",
@@ -61,7 +59,6 @@ int	eat(t_philo *data)
 	{
 		printf("%8lld ms   P%d finished the last meal\n",
 			timestamp(data->begin), data->number);
-		pthread_mutex_unlock(data->death_checker_lock);
 		return (0);
 	}
 	return (1);
@@ -71,7 +68,6 @@ int	has_died(t_philo *data)
 {
 	if (!*(data->alive))
 	{
-		pthread_mutex_unlock(data->death_checker_lock);
 		return (1);
 	}
 	return (0);

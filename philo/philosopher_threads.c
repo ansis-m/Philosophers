@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 19:26:08 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/04 19:20:22 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 19:26:50 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	delay(t_philo *data, int multiplier)
 	pthread_mutex_lock(data->death_checker_lock);
 }
 
-int	philo_cycle(t_philo *data, long long sleep)
+int	philo_cycle(t_philo *data, long long sleep) //dont touch the mutexes upon exit
 {
 	long long	marker;
 
