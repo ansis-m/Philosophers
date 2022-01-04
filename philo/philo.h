@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/04 15:35:32 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 16:33:20 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,14 @@ int			start_threads(pthread_t *threads, t_philo *philosophers, int size);
 void		*philosopher(void *philo_data);
 void		delay(t_philo *data, int multiplier);
 int			initial_delay(t_philo *data);
-int			philo_cycle(t_philo *data, int *live, long long sleep);
+int			philo_cycle(t_philo *data, long long sleep);
+
+//philosopher_threads_utils.c
+int			lock_second_fork(t_philo *data);
+int			lock_first_fork(t_philo *data);
+int			eat(t_philo *data);
+int			has_died(t_philo *data);
+void		go_to_sleep(t_philo *data, long long marker);
 
 //death_checker_threads.c
 bool		still_alive(t_philo *philosopher);
