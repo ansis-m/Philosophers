@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 18:41:22 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/04 14:48:22 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 18:59:15 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	start_death_checker_threads(pthread_t *threads,
 	int				i;
 
 	i = 0;
-	usleep(2000);
 	while (i < size)
 	{
 		pthread_create(&threads[size + i], NULL, death_checker,

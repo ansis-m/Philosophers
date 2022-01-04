@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 19:26:08 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/04 16:46:54 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 19:20:22 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,26 @@ int	philo_cycle(t_philo *data, long long sleep)
 {
 	long long	marker;
 
-	if (!lock_first_fork(data) || !lock_second_fork(data))
-		return (0);
-	if (!eat(data))
-		return (0);
-	if (has_died(data))
-		return (0);
-	marker = get_time_now();
-	printf("%8lld ms   P%d is sleeping\n", timestamp(data->begin), data->number);
-	go_to_sleep(data, marker);
-	if (has_died(data))
-		return (0);
-	printf("%8lld ms   P%d is thinking\n", timestamp(data->begin), data->number);
-	if (data->total % 2 && sleep > 0)
+	while (true)
 	{
-		pthread_mutex_unlock(data->death_checker_lock);
-		usleep(sleep);
-		pthread_mutex_lock(data->death_checker_lock);
+		if (!lock_first_fork(data) || !lock_second_fork(data))
+			return (0);
+		if (!eat(data))
+			return (0);
+		if (has_died(data))
+			return (0);
+		marker = get_time_now();
+		printf("%8lld ms   P%d is sleeping\n", timestamp(data->begin), data->number);
+		go_to_sleep(data, marker);
+		if (has_died(data))
+			return (0);
+		printf("%8lld ms   P%d is thinking\n", timestamp(data->begin), data->number);
+		if (data->total % 2 && sleep > 0)
+		{
+			pthread_mutex_unlock(data->death_checker_lock);
+			usleep(sleep);
+			pthread_mutex_lock(data->death_checker_lock);
+		}	
 	}
 	return (1);
 }
@@ -65,20 +68,14 @@ void	*philosopher(void *philo_data)
 {
 	long long	sleep;
 	t_philo		*data;
-	int			*live;
 
 	data = (t_philo *)(philo_data);
 	pthread_mutex_lock(data->death_checker_lock);
-	live = data->alive;
 	data->last_meal = data->begin;
 	sleep = (2 * data->teat - data->tsleep) * 1000;
 	if (! initial_delay(data))
 		return (NULL);
-	while (*live)
-	{
-		if (! philo_cycle(data, sleep))
-			return (NULL);
-	}
+	philo_cycle(data, sleep);
 	pthread_mutex_unlock(data->death_checker_lock);
 	return (NULL);
 }
