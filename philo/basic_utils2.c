@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 12:05:41 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/02 19:28:32 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 10:32:09 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	join_threads(pthread_t *threads, int size)
 	int	i;
 
 	i = 0;
-	while (i < 2 * size)
+	while (i <  size)
 	{
 		pthread_join(threads[i], NULL);
 		i++;

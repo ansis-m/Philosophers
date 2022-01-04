@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../../../fdf/my_fdf"
+		},
+		{
+			"path": "../../../minitalk/my_minitalk"
+		},
+		{
+			"path": "../../../get_next_line/my_get_next_line"
+		},
+		{
+			"path": "../../../Libft/myLibft"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
