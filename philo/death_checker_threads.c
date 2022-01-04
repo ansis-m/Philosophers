@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 18:41:22 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/04 12:44:05 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 13:20:45 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,25 @@ void	*death_checker(void *philo_data)
 
 	checker = (t_philo *)philo_data;
 	pthread_mutex_lock(checker->death_checker_lock);
+	pthread_mutex_lock(checker->indicator_lock);
 	while (*(checker->alive) && checker->meals)
 	{
 		if (still_alive(checker))
 		{
+			pthread_mutex_unlock(checker->indicator_lock);
 			pthread_mutex_unlock(checker->death_checker_lock);
 			usleep(1000);
 			pthread_mutex_lock(checker->death_checker_lock);
+			pthread_mutex_lock(checker->indicator_lock);
 		}
 		else
 		{
-			pthread_mutex_lock(checker->indicator_lock);
 			*(checker->alive) = 0;
-			pthread_mutex_unlock(checker->indicator_lock);
 			printf("timestamp: %lld\t philosopher %d has died :(\n", timestamp(checker->begin), checker->number);
+			break ;
 		}
 	}
+	pthread_mutex_unlock(checker->indicator_lock);
 	pthread_mutex_unlock(checker->death_checker_lock);
 	return (NULL);
 }
