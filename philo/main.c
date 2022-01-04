@@ -6,11 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2022/01/03 15:35:57 by amalecki         ###   ########.fr       */
-=======
-/*   Updated: 2022/01/04 10:32:13 by amalecki         ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2022/01/04 11:34:54 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +84,7 @@ int	main(int argc, char *argv[])
 	{
 		init_philosophers(philosophers, forks, death_checker_locks, args);
 		start_threads(threads, philosophers, args[0]);
-		//start_death_checker_threads(threads, philosophers, args[0]);
+		start_death_checker_threads(threads, philosophers, args[0]);
 		join_threads(threads, args[0]);
 		destroy_forks(death_checker_locks, args[0]);
 	}

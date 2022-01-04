@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:43:31 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/03 12:27:22 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 12:10:14 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_args(int argc, char *argv[], int args[5])
 		args[i - 1] = ft_atoi(argv[i]);
 		i++;
 	}
-	if (args[0] == 0)
+	if (args[0] == 0 || args[0] > 200 || args[2] < 10 || args[3] < 10)
 		return (0);
 	return (1);
 }

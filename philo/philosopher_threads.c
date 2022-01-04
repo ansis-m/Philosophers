@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 19:26:08 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/03 15:00:41 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 13:07:09 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ void	*philosopher(void *philo_data)
 	}
 	while (*live && data->meals)
 	{
+		pthread_mutex_unlock(data->death_checker_lock);
 		pthread_mutex_lock(data->first_fork);
+		pthread_mutex_lock(data->death_checker_lock);
 		if (!*live)
 		{
 			pthread_mutex_unlock(data->first_fork);
@@ -55,7 +57,9 @@ void	*philosopher(void *philo_data)
 			return (NULL);
 		}
 		printf("timestamp: %lld\t philosopher %d has taken the first fork\n", timestamp(data->begin), data->number);
+		pthread_mutex_unlock(data->death_checker_lock);
 		pthread_mutex_lock(data->second_fork);
+		pthread_mutex_lock(data->death_checker_lock);
 		data->last_meal = get_time_now();
 		if (!*live)
 		{
@@ -100,8 +104,8 @@ void	*philosopher(void *philo_data)
 			pthread_mutex_lock(data->death_checker_lock);
 		}
 	}
-	pthread_mutex_unlock(data->death_checker_lock);
-	return (NULL);
+		pthread_mutex_unlock(data->death_checker_lock);
+		return (NULL);
 }
 
 int	start_threads(pthread_t *threads, t_philo *philosophers, int size)

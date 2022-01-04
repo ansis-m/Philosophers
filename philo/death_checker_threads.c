@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 18:41:22 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/03 15:26:18 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/04 12:44:05 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*death_checker(void *philo_data)
 		if (still_alive(checker))
 		{
 			pthread_mutex_unlock(checker->death_checker_lock);
-			usleep(2000);
+			usleep(1000);
 			pthread_mutex_lock(checker->death_checker_lock);
 		}
 		else
