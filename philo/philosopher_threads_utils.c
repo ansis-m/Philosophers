@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 15:59:20 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/04 19:28:58 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/05 11:42:32 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	lock_second_fork(t_philo *data)
 
 int	eat(t_philo *data)
 {
-	while (timestamp(data->last_meal) < data->teat)
+	while (timestamp(data->last_meal) < data->teat && *(data->alive))
 	{
 		pthread_mutex_unlock(data->death_checker_lock);
 		usleep(1000);
@@ -55,12 +55,6 @@ int	eat(t_philo *data)
 	pthread_mutex_unlock(data->first_fork);
 	pthread_mutex_unlock(data->second_fork);
 	data->meals--;
-	if (!data->meals)
-	{
-		printf("%8lld ms   P%d finished the last meal\n",
-			timestamp(data->begin), data->number);
-		return (0);
-	}
 	return (1);
 }
 
@@ -75,7 +69,7 @@ int	has_died(t_philo *data)
 
 void	go_to_sleep(t_philo *data, long long marker)
 {
-	while (timestamp(marker) < data->tsleep)
+	while (timestamp(marker) < data->tsleep && *(data->alive))
 	{
 		pthread_mutex_unlock(data->death_checker_lock);
 		usleep(1000);
