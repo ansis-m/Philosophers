@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 19:46:58 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/05 20:59:32 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <signal.h>
+# include <sys/wait.h>
+# include <semaphore.h>
 
 typedef struct s_philo
 {

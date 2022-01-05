@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 19:47:27 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/05 21:27:33 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ static void	init_philosophers(t_philo *philosophers, pid_t	*pids, int args[6])
 void	philo(t_philo	*philosophers, int i)
 {
 	printf("philosopher %d\n", philosophers[i].number);
-	for (int j =0; j < philosophers->total; j++)
-		printf("philosophers%d, pid %d, j %d\n", philosophers[i].number, philosophers[i].pids[j], j);
+
+	for (int j =0; j < philosophers->number; j++)
+		sleep(4);
+	printf("exiting child %d\n", philosophers[i].number);
 	deallocate(philosophers, philosophers->pids);
 }
 
@@ -56,6 +58,7 @@ int	main(int argc, char *argv[])
 	pid_t			*pids;
 	int				args[6];
 	int				i;
+	int				r;
 
 	if (!check_args(argc, argv, args))
 		return (write(1, "Problem with arguments!\n", 25));
@@ -71,14 +74,18 @@ int	main(int argc, char *argv[])
 		if (pids[i] == 0)
 		{
 			philo(philosophers, i);
-			exit(0);
+			exit(222);
 		}
 		i++;
 	}
-	usleep(500000);
+	waitpid(-1, &r, 0);
+	printf("first child exited. exit value: %d now killing everyone\n", WSTOPSIG(r));
 	for (int k = 0; k < args[0]; k++)
-		printf("pids from main %d\n", pids[k]);
-	printf("MAIN PID %d", getpid());
+	{
+		printf("killing pids from main %d\n", pids[k]);
+		kill(pids[k], SIGKILL);
+	}
+	printf("MAIN PID %d\n", getpid());
 	deallocate(philosophers, pids);
 	return (0);
 }
