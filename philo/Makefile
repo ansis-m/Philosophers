@@ -6,7 +6,7 @@
 #    By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/29 11:33:59 by amalecki          #+#    #+#              #
-#    Updated: 2022/01/05 11:27:23 by amalecki         ###   ########.fr        #
+#    Updated: 2022/01/05 12:13:17 by amalecki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ philosopher_threads_utils.c
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -pthread -lpthread -Werror # TO BE REMOVED!!!!!!!!!!!! -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -pthread -lpthread # -fsanitize=thread
 
 NAME = philo
 

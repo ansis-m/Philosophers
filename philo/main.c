@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 11:32:07 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/05 12:08:33 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ static void	init_philosophers(t_philo *p, pthread_mutex_t *forks,
 	while (i < args[0])
 	{
 		init_args(&p[i], args, i);
-		// if (i == args[0] - 1)
-		// {
-		// 	p[i].first_fork = forks;
-		// 	p[i].second_fork = forks + args[0] - 1;
-		// }
-		// else
-		// {
+		if (i == args[0] - 1)
+		{
+			p[i].first_fork = forks;
+			p[i].second_fork = forks + args[0] - 1;
+		}
+		else
+		{
 			p[i].first_fork = forks + i;
-			p[i].second_fork = forks + (i + 1) % args[0];
-		//}
+			p[i].second_fork = forks + i + 1;
+		}
 		p[i].death_checker_lock = death_checker_locks + i;
 		p[i].indicator_lock = death_checker_locks + args[0];
 		i++;

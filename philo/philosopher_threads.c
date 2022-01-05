@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 19:26:08 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 11:10:11 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/05 12:00:16 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ void	delay(t_philo *data, int multiplier)
 
 int	philo_cycle(t_philo *data, long long sleep)
 {
-	long long	marker;
-
 	while (data->meals)
 	{
 		if (!lock_first_fork(data) || !lock_second_fork(data))
@@ -48,12 +46,13 @@ int	philo_cycle(t_philo *data, long long sleep)
 			return (0);
 		if (!*(data->alive))
 			return (0);
-		marker = get_time_now();
-		printf("%8lld ms   P%d is sleeping\n", timestamp(data->begin), data->number);
-		go_to_sleep(data, marker);
+		printf("%8lld ms   P%d is sleeping\n",
+			timestamp(data->begin), data->number);
+		go_to_sleep(data, get_time_now());
 		if (!*(data->alive))
 			return (0);
-		printf("%8lld ms   P%d is thinking\n", timestamp(data->begin), data->number);
+		printf("%8lld ms   P%d is thinking\n",
+			timestamp(data->begin), data->number);
 		if (sleep > 0 && data->total % 2)
 		{
 			pthread_mutex_unlock(data->death_checker_lock);
