@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:43:31 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 17:08:07 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/05 19:37:23 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,22 @@ int	check_args(int argc, char *argv[], int args[5])
 	return (1);
 }
 
-int	aloc_pointers(t_philo **philosophers, int size)
+int	aloc_pointers(t_philo **philosophers, pid_t	**pids, int size)
 {
 	*philosophers = (t_philo *)malloc(sizeof(t_philo) * size);
-	if (!*philosophers)
+	*pids = (pid_t *)malloc(sizeof(pid_t) * (size + 1));
+	if (!*philosophers || !*pids)
 	{
-		deallocate(*philosophers);
+		deallocate(*philosophers, *pids);
 		return (0);
 	}
+	for(int i = 0; i < size; i++)
+		*(*pids + i) = 999;
 	return (1);
 }
 
-void	deallocate(t_philo *philosophers)
+void	deallocate(t_philo *philosophers, pid_t	*pids)
 {
 	free(philosophers);
+	free(pids);
 }

@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 17:19:03 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/05 19:47:27 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	init_args(t_philo *philosophers, int args[6], int i)
 	philosophers->number = i + 1;
 }
 
-static void	init_philosophers(t_philo *philosophers, int args[6])
+static void	init_philosophers(t_philo *philosophers, pid_t	*pids, int args[6])
 {
 	int				i;
 
@@ -31,9 +31,18 @@ static void	init_philosophers(t_philo *philosophers, int args[6])
 	i = 0;
 	while (i < args[0])
 	{
+		philosophers[i].pids = pids;
 		init_args(&philosophers[i], args, i);
 		i++;
 	}
+}
+
+void	philo(t_philo	*philosophers, int i)
+{
+	printf("philosopher %d\n", philosophers[i].number);
+	for (int j =0; j < philosophers->total; j++)
+		printf("philosophers%d, pid %d, j %d\n", philosophers[i].number, philosophers[i].pids[j], j);
+	deallocate(philosophers, philosophers->pids);
 }
 
 //args[0] number of philosophers
@@ -44,17 +53,32 @@ static void	init_philosophers(t_philo *philosophers, int args[6])
 int	main(int argc, char *argv[])
 {
 	t_philo			*philosophers;
+	pid_t			*pids;
 	int				args[6];
+	int				i;
 
 	if (!check_args(argc, argv, args))
 		return (write(1, "Problem with arguments!\n", 25));
-	if (!aloc_pointers(&philosophers, args[0]))
+	if (!aloc_pointers(&philosophers, &pids, args[0]))
 		return (write(1, "Problem with memory allocation!\n", 33));
-	init_philosophers(philosophers, args);
+	init_philosophers(philosophers, pids, args);
 	if (!args[4])
 		printf("There is no food! The bowl is empty!\n");
-	for (int i = 0; i < args[0]; i++)
-		printf("total %d number %d, tdie %d, teat %d, meals %d\n", philosophers[i].total, philosophers[i].number, philosophers[i].tdie, philosophers[i].teat, philosophers[i].meals);
-	deallocate(philosophers);
+	i = 0;
+	while (i < args[0])
+	{
+		pids[i] = fork();
+		if (pids[i] == 0)
+		{
+			philo(philosophers, i);
+			exit(0);
+		}
+		i++;
+	}
+	usleep(500000);
+	for (int k = 0; k < args[0]; k++)
+		printf("pids from main %d\n", pids[k]);
+	printf("MAIN PID %d", getpid());
+	deallocate(philosophers, pids);
 	return (0);
 }

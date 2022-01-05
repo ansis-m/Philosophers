@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 17:07:21 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/05 19:46:58 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@
 # include <stdio.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <signal.h>
 
 typedef struct s_philo
 {
 	long long		begin;
 	long long		last_meal;
 	long long		marker;
+	pid_t			*pids;
 	int				*alive;
 	int				number;
 	int				total;
@@ -41,9 +43,9 @@ typedef struct s_philo
 int			ft_atoi(const char *nptr);
 
 //basic_utils.c
-void		deallocate(t_philo *philosophers);
+void		deallocate(t_philo *philosophers, pid_t	*pids);
 int			check_args(int argc, char *argv[], int args[6]);
-int			aloc_pointers(t_philo **philosophers, int size);
+int			aloc_pointers(t_philo **philosophers, pid_t	**pids, int size);
 
 //basic_utils2.c
 long long	get_time_now(void);
