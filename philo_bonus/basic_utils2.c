@@ -6,11 +6,25 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 12:05:41 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 16:55:03 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/06 18:42:08 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+void	fork_kids(pid_t *pids, t_philo *philosophers, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		pids[i] = fork();
+		if (pids[i] == 0)
+			philo(philosophers, i);
+		i++;
+	}
+}
 
 long long	get_time_now(void)
 {

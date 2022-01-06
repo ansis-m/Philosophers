@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 20:59:32 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/06 19:01:39 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_philo
 }	t_philo;
 
 //main_bonus.c
+void		philo(t_philo	*philosophers, int i);
 
 //ft_atoi.c
 int			ft_atoi(const char *nptr);
@@ -48,8 +49,11 @@ int			ft_atoi(const char *nptr);
 void		deallocate(t_philo *philosophers, pid_t	*pids);
 int			check_args(int argc, char *argv[], int args[6]);
 int			aloc_pointers(t_philo **philosophers, pid_t	**pids, int size);
+void		terminate(pid_t *pids, int size);
+void		wait_kids(pid_t *pids, int size);
 
 //basic_utils2.c
+void		fork_kids(pid_t *pids, t_philo *philosophers, int size);
 long long	get_time_now(void);
 long long	timestamp(long long begin);
 
