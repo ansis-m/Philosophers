@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:43:31 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 19:37:23 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/06 17:33:38 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	check_args(int argc, char *argv[], int args[5])
 	}
 	if (args[0] == 0 || args[0] > 200 || args[2] < 10 || args[3] < 10)
 		return (0);
+	if (!args[4])
+		return (printf("There is no food! The bowl is empty!\n"));
 	return (1);
 }
 

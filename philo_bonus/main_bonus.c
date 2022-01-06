@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 21:27:33 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/06 17:34:33 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,56 @@ static void	init_philosophers(t_philo *philosophers, pid_t	*pids, int args[6])
 	}
 }
 
-void	philo(t_philo	*philosophers, int i)
+int	philo(t_philo	*philosophers, int i)
 {
+	bool dead = false;
 	printf("philosopher %d\n", philosophers[i].number);
 
 	for (int j =0; j < philosophers->number; j++)
 		sleep(4);
+	usleep(300000);
+	usleep(50000);
+	usleep(5000);
+	usleep(5000);
+	usleep(5000);
 	printf("exiting child %d\n", philosophers[i].number);
 	deallocate(philosophers, philosophers->pids);
+	if (dead)
+		exit(1);
+	exit(22);
+}
+
+void	terminate(pid_t *pids, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		printf("killing pids from main %d\n", pids[i]);
+		kill(pids[i], SIGKILL);
+		i++;
+	}
+}
+
+void	wait_kids(pid_t *pids, int size)
+{
+	int	i;
+	int	r;
+
+	i = 0;
+	while (i < size)
+	{
+		waitpid(-1, &r, 0);
+		if (WSTOPSIG(r) == 1)
+		{
+			printf("MAIN: child dead. exit val: %d killing rest\n", WSTOPSIG(r));
+			terminate(pids, size);
+			break ;
+		}
+		printf("from MAIN child returned alive. exit value: %d\n", WSTOPSIG(r));
+		i++;
+	}
 }
 
 //args[0] number of philosophers
@@ -58,34 +100,21 @@ int	main(int argc, char *argv[])
 	pid_t			*pids;
 	int				args[6];
 	int				i;
-	int				r;
 
-	if (!check_args(argc, argv, args))
+	if (check_args(argc, argv, args) != 1)
 		return (write(1, "Problem with arguments!\n", 25));
 	if (!aloc_pointers(&philosophers, &pids, args[0]))
 		return (write(1, "Problem with memory allocation!\n", 33));
 	init_philosophers(philosophers, pids, args);
-	if (!args[4])
-		printf("There is no food! The bowl is empty!\n");
 	i = 0;
 	while (i < args[0])
 	{
 		pids[i] = fork();
 		if (pids[i] == 0)
-		{
 			philo(philosophers, i);
-			exit(222);
-		}
 		i++;
 	}
-	waitpid(-1, &r, 0);
-	printf("first child exited. exit value: %d now killing everyone\n", WSTOPSIG(r));
-	for (int k = 0; k < args[0]; k++)
-	{
-		printf("killing pids from main %d\n", pids[k]);
-		kill(pids[k], SIGKILL);
-	}
-	printf("MAIN PID %d\n", getpid());
+	wait_kids(pids, args[0]);
 	deallocate(philosophers, pids);
 	return (0);
 }
