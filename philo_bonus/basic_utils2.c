@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 12:05:41 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/06 18:42:08 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/06 19:31:28 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	fork_kids(pid_t *pids, t_philo *philosophers, int size)
 	{
 		pids[i] = fork();
 		if (pids[i] == 0)
-			philo(philosophers, i);
+		{
+			exit(philo(philosophers, i));
+		}
 		i++;
 	}
 }

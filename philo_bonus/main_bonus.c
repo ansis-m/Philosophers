@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/06 19:08:22 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/06 19:36:28 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,14 @@ static void	init_philosophers(t_philo *philosophers, pid_t	*pids, int args[6])
 		i++;
 	}
 }
- //runs forever, dies with the child, memory is not an issue
+
+//runs forever, dies with the child, memory not an issue
 void	*death_checker(void *philo_data)
 {
 	t_philo	*p;
-	int		i;
 
 	p = (t_philo *)philo_data;
-	i = 0;
-	while (i < 20)// / p->number)
+	while (true)
 	{
 		printf("hello from the death_checker %d\n", p->number);
 		sleep(2);
@@ -62,25 +61,25 @@ void	*death_checker(void *philo_data)
 		// 	}
 		// 	break ;
 		// }
-		i++;
+		break ;
 	}
 	return (NULL);
 }
 
-void	philo(t_philo	*philosophers, int i)
+int	philo(t_philo	*philosophers, int i)
 {
 	pthread_t	d_checker;
 
 	pthread_create(&d_checker, NULL, death_checker, (void *)(philosophers +i));
-	pthread_detach(d_checker);
+	pthread_join(d_checker, NULL);
 	printf("philosopher %d\n", i + 1);
 	for (int j = 0; j < philosophers[i].number; j++)
 		sleep(2);
 	printf("exiting child %d thread detached\n", philosophers[i].number);
 	deallocate(philosophers, philosophers[i].pids);
 	if (true)
-		exit(22);
-	exit(22);
+		return (1);
+	return (22);
 }
 
 int	main(int argc, char *argv[])
@@ -96,7 +95,6 @@ int	main(int argc, char *argv[])
 	init_philosophers(philosophers, pids, args);
 	fork_kids(pids, philosophers, args[0]);
 	wait_kids(pids, args[0]);
-	usleep(200000);
 	deallocate(philosophers, pids);
 	return (0);
 }

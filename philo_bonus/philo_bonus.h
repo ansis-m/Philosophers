@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/06 19:01:39 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/06 19:29:59 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_philo
 }	t_philo;
 
 //main_bonus.c
-void		philo(t_philo	*philosophers, int i);
+int			philo(t_philo	*philosophers, int i);
 
 //ft_atoi.c
 int			ft_atoi(const char *nptr);
