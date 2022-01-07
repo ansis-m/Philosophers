@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/05 12:08:33 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/06 17:55:35 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,6 @@ static void	init_philosophers(t_philo *p, pthread_mutex_t *forks,
 	}
 }
 
-//args[0] number of philosophers
-//args[1] time_to_die
-//args[2] time_to_eat
-//arg[3] time_to_sleep
-//arg[4] number_of_times_each_philosopher_must_eat
 int	main(int argc, char *argv[])
 {
 	pthread_mutex_t	*forks;

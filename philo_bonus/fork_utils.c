@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 12:05:41 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/07 09:01:36 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/07 11:17:14 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,12 @@ void	wait_kids(pid_t *pids, int size)
 	i = 0;
 	while (i < size)
 	{
-		printf("WAITING KIDS\n");
 		waitpid(-1, &r, 0);
 		if (WSTOPSIG(r) == 1)
 		{
-			printf("MAIN: child dead. exit val: %d killing rest\n", WSTOPSIG(r));
 			terminate(pids, size);
 			break ;
 		}
-		printf("from MAIN child returned alive. exit value: %d\n", WSTOPSIG(r));
 		i++;
 	}
 }
@@ -87,7 +84,6 @@ void	terminate(pid_t *pids, int size)
 	i = 0;
 	while (i < size)
 	{
-		printf("killing pids from main %d\n", pids[i]);
 		kill(pids[i], SIGKILL);
 		i++;
 	}
