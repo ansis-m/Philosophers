@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 09:03:29 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/07 09:05:12 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/07 11:25:50 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	initial_delay(t_philo *data)
 	{
 		printf("%8lld ms   P%d has taken the first fork\n",
 			timestamp(data->begin), data->number);
-		return (0);
+		return (1);
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/07 11:06:03 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/07 11:31:58 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,17 @@ void	go_to_sleep(t_philo *data, long long marker)
 	}
 }
 
-//1-dead 22-finished
 int	philo_cycle(t_philo *data, long long sleep)
 {
 	while (data->meals)
 	{
+		if (data->total == 1)
+		{
+			usleep(1000);
+			if (!*(data->alive))
+				return (1);
+			continue ;
+		}
 		if (!lock_first_fork(data) || !lock_second_fork(data))
 			return (1);
 		if (!eat(data))
@@ -147,7 +153,7 @@ int	main(int argc, char *argv[])
 		return (write(1, "Problem with arguments!\n", 25));
 	if (!aloc_pointers(&philosophers, &pids, args[0]))
 		return (write(1, "Problem with memory allocation!\n", 33));
-	forks = sem_open("/forks", O_CREAT, S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH, args[0]);
+	forks = sem_open("/forks", O_CREAT, S_IROTH | S_IWOTH, args[0]);
 	init_philosophers(philosophers, forks, pids, args);
 	fork_kids(pids, philosophers, args[0]);
 	wait_kids(pids, args[0]);
