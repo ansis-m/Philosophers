@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/06 19:29:59 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/07 09:07:38 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <semaphore.h>
+# include <fcntl.h>
 
 typedef struct s_philo
 {
@@ -30,6 +31,7 @@ typedef struct s_philo
 	long long		last_meal;
 	long long		marker;
 	pid_t			*pids;
+	sem_t			*forks;
 	int				*alive;
 	int				number;
 	int				total;
@@ -49,12 +51,19 @@ int			ft_atoi(const char *nptr);
 void		deallocate(t_philo *philosophers, pid_t	*pids);
 int			check_args(int argc, char *argv[], int args[6]);
 int			aloc_pointers(t_philo **philosophers, pid_t	**pids, int size);
+long long	get_time_now(void);
+long long	timestamp(long long begin);
+
+//fork_utils.c
+void		init_args(t_philo *philosophers, int args[6], int i);
+void		init_philosophers(t_philo *philosophers,
+				sem_t *forks, pid_t *pids, int args[6]);
+void		fork_kids(pid_t *pids, t_philo *philosophers, int size);
 void		terminate(pid_t *pids, int size);
 void		wait_kids(pid_t *pids, int size);
 
-//basic_utils2.c
-void		fork_kids(pid_t *pids, t_philo *philosophers, int size);
-long long	get_time_now(void);
-long long	timestamp(long long begin);
+//philo_cycle_utils.c
+void		delay(t_philo *data, int multiplier);
+int			initial_delay(t_philo *data);
 
 #endif

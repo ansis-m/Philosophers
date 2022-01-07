@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:43:31 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/06 18:15:03 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/07 08:45:33 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,36 +66,15 @@ void	deallocate(t_philo *philosophers, pid_t	*pids)
 	free(pids);
 }
 
-void	terminate(pid_t *pids, int size)
+long long	get_time_now(void)
 {
-	int	i;
+	struct timeval	tv;
 
-	i = 0;
-	while (i < size)
-	{
-		printf("killing pids from main %d\n", pids[i]);
-		kill(pids[i], SIGKILL);
-		i++;
-	}
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void	wait_kids(pid_t *pids, int size)
+long long	timestamp(long long begin)
 {
-	int	i;
-	int	r;
-
-	i = 0;
-	while (i < size)
-	{
-		printf("WAITING KIDS\n");
-		waitpid(-1, &r, 0);
-		if (WSTOPSIG(r) == 1)
-		{
-			printf("MAIN: child dead. exit val: %d killing rest\n", WSTOPSIG(r));
-			terminate(pids, size);
-			break ;
-		}
-		printf("from MAIN child returned alive. exit value: %d\n", WSTOPSIG(r));
-		i++;
-	}
+	return (get_time_now() - begin);
 }

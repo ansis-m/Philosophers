@@ -6,11 +6,11 @@
 #    By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/29 11:33:59 by amalecki          #+#    #+#              #
-#    Updated: 2022/01/05 17:13:15 by amalecki         ###   ########.fr        #
+#    Updated: 2022/01/07 09:04:37 by amalecki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = main_bonus.c ft_atoi.c basic_utils.c basic_utils2.c
+SRC = main_bonus.c ft_atoi.c basic_utils.c fork_utils.c philo_cycle_utils.c
 
 CC = cc
 
