@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 09:03:29 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/07 11:25:50 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/07 11:37:44 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,40 @@ int	initial_delay(t_philo *data)
 			timestamp(data->begin), data->number);
 		return (1);
 	}
+	return (1);
+}
+
+bool	still_alive(t_philo *philosopher)
+{
+	if (get_time_now() < philosopher->last_meal + philosopher->tdie)
+		return (true);
+	return (false);
+}
+
+int	lock_first_fork(t_philo *data)
+{
+	sem_wait(data->forks);
+	if (!*(data->alive))
+	{
+		sem_post(data->forks);
+		return (0);
+	}
+	printf("%8lld ms   P%d has taken the first fork\n",
+		timestamp(data->begin), data->number);
+	return (1);
+}
+
+int	lock_second_fork(t_philo *data)
+{
+	sem_wait(data->forks);
+	data->last_meal = get_time_now();
+	if (!*(data->alive))
+	{
+		sem_post(data->forks);
+		sem_post(data->forks);
+		return (0);
+	}
+	printf("%8lld ms   P%d has taken the second fork and is eating\n",
+		timestamp(data->begin), data->number);
 	return (1);
 }

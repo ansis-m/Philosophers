@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:33:50 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/07 09:07:38 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/07 11:42:01 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,12 @@ void		wait_kids(pid_t *pids, int size);
 //philo_cycle_utils.c
 void		delay(t_philo *data, int multiplier);
 int			initial_delay(t_philo *data);
+bool		still_alive(t_philo *philosopher);
+int			lock_second_fork(t_philo *data);
+int			lock_first_fork(t_philo *data);
+
+//philo_cycle_utils2.c
+int			eat(t_philo *data);
+void		go_to_sleep(t_philo *data, long long marker);
 
 #endif
