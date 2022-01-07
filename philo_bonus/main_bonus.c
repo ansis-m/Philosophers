@@ -6,7 +6,7 @@
 /*   By: amalecki <amalecki@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 11:34:03 by amalecki          #+#    #+#             */
-/*   Updated: 2022/01/07 09:05:05 by amalecki         ###   ########.fr       */
+/*   Updated: 2022/01/07 10:18:35 by amalecki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,55 @@ void	*death_checker(void *philo_data)
 		// 	}
 		// 	break ;
 		// }
-		break ;
+		//break ;
 	}
 	return (NULL);
+}
+
+int	lock_first_fork(t_philo *data)
+{
+	int i;
+	sem_getvalue(data->forks, &i);
+	
+	printf("%d waiting the first fork. available %d\n",data->number, i);
+	sem_wait(data->forks);
+	if (!*(data->alive))
+	{
+		sem_post(data->forks);
+		return (0);
+	}
+	printf("%8lld ms   P%d has taken the first fork\n",
+		timestamp(data->begin), data->number);
+	return (1);
+}
+
+int	lock_second_fork(t_philo *data)
+{
+	int i;
+	sem_getvalue(data->forks, &i);
+	
+	printf("%d waiting the second fork. available %d\n", data->number, i);
+	
+	sem_wait(data->forks);
+	data->last_meal = get_time_now();
+	if (!*(data->alive))
+	{
+		sem_post(data->forks);
+		sem_post(data->forks);
+		return (0);
+	}
+	printf("%8lld ms   P%d has taken the second fork and is eating\n",
+		timestamp(data->begin), data->number);
+	return (1);
 }
 
 int	philo_cycle(t_philo *data, long long sleep)
 {
 	while (data->meals)
 	{
+		if (!lock_first_fork(data) || !lock_second_fork(data))
+			return (0);
 		usleep(2000000);
-		usleep(2000000);
-		break ;
-		// if (!lock_first_fork(data) || !lock_second_fork(data))
-		// 	return (0);
 		// if (!eat(data))
 		// 	return (0);
 		// if (!*(data->alive))
@@ -64,7 +99,8 @@ int	philo_cycle(t_philo *data, long long sleep)
 		// if (sleep > 0 && data->total % 2)
 		// {
 		// 	usleep(sleep);
-		// }	
+		// }
+		break ;
 	}
 	return (1);
 }
@@ -99,11 +135,12 @@ int	main(int argc, char *argv[])
 		return (write(1, "Problem with arguments!\n", 25));
 	if (!aloc_pointers(&philosophers, &pids, args[0]))
 		return (write(1, "Problem with memory allocation!\n", 33));
-	forks = sem_open("forks", O_CREAT, 0600, args[0]);
+	forks = sem_open("/torks", O_CREAT, S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH, args[0]);
 	init_philosophers(philosophers, forks, pids, args);
 	fork_kids(pids, philosophers, args[0]);
 	wait_kids(pids, args[0]);
 	deallocate(philosophers, pids);
+	sem_unlink("/torks");
 	sem_close(forks);
 	return (0);
 }
